@@ -1,3 +1,4 @@
+using dwprbz.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -21,6 +22,7 @@ namespace dwprbz
         public void ConfigureServices(IServiceCollection services)
         {
 
+            MyDbContext.Instance = new MyDbContext(Configuration);
             services.AddControllersWithViews();
 
             // In production, the React files will be served from this directory
