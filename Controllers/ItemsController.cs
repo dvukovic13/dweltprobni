@@ -24,24 +24,45 @@ namespace dwprbz.Controllers
             MyDbContext myDbContext = MyDbContext.Instance;
             MySqlConnection connection = myDbContext.connection;
 
+            if(connection != null && connection.State == ConnectionState.Closed)
+                myDbContext.connection.Open();
 
-            myDbContext.connection.Open();
             MySqlCommand cmd = new MySqlCommand("SELECT * FROM items", connection);
             MySqlDataReader reader = cmd.ExecuteReader();
 
 
-            if (reader.HasRows)
+            using(connection){
+                using(reader){
+                    if(reader.HasRows){
+                        DataTable dt = new DataTable();
+                        dt.Load(reader);
+
+                        string json = JsonConvert.SerializeObject(dt);
+                        
+                        return json;
+                    }
+                    else return "";
+                }
+            }
+
+            /*if (reader.HasRows)
             {
                 DataTable dt = new DataTable();
                 dt.Load(reader);
 
                 string json = JsonConvert.SerializeObject(dt);
+                
+                reader.Close();
 
-                connection.Close();
+                if(connection.State == ConnectionState.Open)
+                    connection.Close();
+
+                
+                
                 return json;
 
             }
-            else return "";
+            else return "";*/
 
 
 
