@@ -27,6 +27,7 @@ namespace dwprbz.Controllers
             if(connection != null && connection.State == ConnectionState.Closed)
                 myDbContext.connection.Open();
 
+
             MySqlCommand cmd = new MySqlCommand("SELECT * FROM items", connection);
             MySqlDataReader reader = cmd.ExecuteReader();
 

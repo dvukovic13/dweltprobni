@@ -1,5 +1,6 @@
-import React, { Component, useState } from "react";
+import React, { Component } from "react";
 import './Store.css'
+import noImage from '../assets/noImage.jpg';
 
 export class Store extends Component{
     static displayName = Store.name;
@@ -20,10 +21,11 @@ export class Store extends Component{
             <div className="itemsList">
                 {items.map(item => 
                     <div>
-                    <h3>{item.name}</h3>
-                    <img src={item.image} style={{width:'200px'}}></img>
-                    <h4>{item.type}</h4>
-                    <button>Dodaj u korpu</button>
+                        <p key={item.Id}>key</p>
+                        <h3>{item.name}</h3>
+                        <img src={item.image==null ? noImage:item.image} style={{width:'200px'}}></img>
+                        <h4>{item.type}</h4>
+                        <button>Dodaj u korpu</button>
                     </div>
                     )}
             </div>
@@ -53,10 +55,12 @@ export class Store extends Component{
         let isLoading = this.state.loading;
         let content = isLoading ? <p>Loading...</p> : Store.renderStoreItems(this.state.items)
 
-        return(<div style={{width:'90wv'}}>
-            <h1>Ponuda:</h1>
-            <hr/>
-            {content}</div>);
+        return(
+            <div style={{width:'90wv'}}>
+                <h1>Ponuda:</h1>
+                <hr/>
+                {content}
+            </div>);
         
     }
 
@@ -64,7 +68,7 @@ export class Store extends Component{
         const response = await fetch('api/items');
         const data = await response.json();
 
-        //console.log(data);
+        console.log(data);
 
         this.setState({items: data,loading: false});
         
